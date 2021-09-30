@@ -1,20 +1,20 @@
 import { Component } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
+import DeleteComment from "./DeleteComment";
 
 class CommentArea extends Component {
   state = {
-    comment: [],
+    comments: [],
   };
 
   // componentDidMount is a lifecycle method happening AFTER the initial render
   // componentDidMount happens JUST ONCE for the whole lifecycle of the component
   // because of this it's the PERFECT PLACE for EXPENSIVE OPERATIONS (i.e. fetches)
 
-  fetchComments = async () => {
+  fetchComments = async (id) => {
     try {
       let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/comments/
-        `,
+        "https://striveschool-api.herokuapp.com/api/comments/" + id,
         {
           headers: {
             Authorization:
@@ -26,7 +26,7 @@ class CommentArea extends Component {
         let data = await response.json();
         console.log("HERE IS MY DATA", data);
         this.setState({
-          comment: data,
+          comments: data,
         });
       } else {
         // we'll fall here if the URL is mispelled or if the server has a problem
@@ -44,18 +44,18 @@ class CommentArea extends Component {
     // 2) immediately after the initial invocation of render()
     console.log("this is componentDidMount!");
     // here we're going to do the fetch...
-    this.fetchComments();
+    this.fetchComments(this.props.id);
   };
 
   render() {
     return (
       <>
         <ListGroup>
-          {this.state.comment.map((c) => (
-            <ListGroup.Item key={c._id}>
-              {c.comment}
-              {c.rate}
-            </ListGroup.Item>
+          {this.state.comments.map((c) => (
+            <div>
+              <ListGroup.Item key={c._id}>{c.comment}</ListGroup.Item>
+              <DeleteComment id={c._id} />
+            </div>
           ))}
         </ListGroup>
       </>
