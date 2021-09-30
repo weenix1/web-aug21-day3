@@ -5,10 +5,12 @@ import MyBadge from "./components/MyBadge";
 import SingleBook from "./components/SingleBook";
 import BookList from "./components/BookList";
 import fantasy from "./data/fantasy.json";
+import MyNavBar from "./components/MyNavBar";
 
 function App() {
   return (
     <div className="App">
+      <MyNavBar />
       <header className="App-header">
         <WarningSign text="Watch out again!" />
         <MyBadge text="NEW!!" color="info" />
