@@ -38,7 +38,7 @@ class CommentArea extends Component {
     }
   };
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     // here I can write my code, being sure that it will be executed:
     // 1) just once!
     // 2) immediately after the initial invocation of render()
@@ -47,16 +47,26 @@ class CommentArea extends Component {
     this.fetchComments(this.props.id);
   };
 
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.id !== this.props.id) {
+      this.fetchComments(this.props.id);
+    }
+  };
+
   render() {
     return (
       <>
         <ListGroup>
-          {this.state.comments.map((c) => (
-            <div>
-              <ListGroup.Item key={c._id}>{c.comment}</ListGroup.Item>
-              <DeleteComment id={c._id} />
-            </div>
-          ))}
+          {this.state.comments ? (
+            this.state.comments.map((c) => (
+              <div>
+                <ListGroup.Item key={c._id}>{c.comment}</ListGroup.Item>
+                <DeleteComment id={c._id} />
+              </div>
+            ))
+          ) : (
+            <h1>Loading Comments</h1>
+          )}
         </ListGroup>
       </>
     );
